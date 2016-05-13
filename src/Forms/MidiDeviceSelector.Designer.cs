@@ -39,6 +39,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.comboBoxMidiOutSelect = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.comboBoxMidiInSelect = new System.Windows.Forms.ComboBox();
@@ -46,6 +47,8 @@
             this.xgpGrid1 = new Tsukikage.XGTGCtrl2.Forms.XGParameterGrid();
             this.pictureBox1 = new Tsukikage.XGTGCtrl2.Forms.MidiDeviceSelector.PictureBoxX();
             this.buttonOpenConsole = new System.Windows.Forms.Button();
+            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.timer1 = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -115,10 +118,20 @@
             this.buttonOpenConsole.UseVisualStyleBackColor = true;
             this.buttonOpenConsole.Click += new System.EventHandler(this.buttonOpenConsole_Click);
             // 
+            // progressBar1
+            // 
+            this.progressBar1.Location = new System.Drawing.Point(5, 181);
+            this.progressBar1.MarqueeAnimationSpeed = 1;
+            this.progressBar1.Name = "progressBar1";
+            this.progressBar1.Size = new System.Drawing.Size(96, 10);
+            this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
+            this.progressBar1.TabIndex = 14;
+            // 
             // MidiDeviceSelector
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.buttonOpenConsole);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.xgpGrid1);
@@ -143,5 +156,7 @@
         private XGParameterGrid xgpGrid1;
         private MidiDeviceSelector.PictureBoxX pictureBox1;
         private System.Windows.Forms.Button buttonOpenConsole;
+        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Timer timer1;
     }
 }

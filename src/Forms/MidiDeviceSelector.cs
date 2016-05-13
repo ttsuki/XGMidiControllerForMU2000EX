@@ -33,7 +33,22 @@ namespace Tsukikage.XGTGCtrl2.Forms
             if (comboBoxMidiOutSelect.Items.Count > 0) { comboBoxMidiOutSelect.SelectedIndex = outIndex; }
 
             pictureBox1.Height = pictureBox1.Width;
+
+            timer1.Interval = 10;
+            timer1.Tick += Timer1_Tick;
+            timer1.Enabled = true;
+
             CreateXGPControls();
+        }
+
+        private void Timer1_Tick(object sender, EventArgs e)
+        {
+            bool prev = progressBar1.Style == ProgressBarStyle.Marquee;
+            bool curr = !Device.AllDumpRequestHasDone;
+            if (prev && !curr)
+            {
+                progressBar1.Style = ProgressBarStyle.Blocks;
+            }
         }
 
         void CreateXGPControls()
@@ -105,44 +120,48 @@ namespace Tsukikage.XGTGCtrl2.Forms
                     return;
                 }
 
-                Device.SendXGBulkDumpRequest(0x000000);
-                Device.SendXGBulkDumpRequest(0x010000);
-                Device.SendXGBulkDumpRequest(0x020100);
-                Device.SendXGBulkDumpRequest(0x020110);
-                Device.SendXGBulkDumpRequest(0x020120);
-                Device.SendXGBulkDumpRequest(0x020130);
-                Device.SendXGBulkDumpRequest(0x020140);
-                Device.SendXGBulkDumpRequest(0x020170);
-                Device.SendXGBulkDumpRequest(0x024000);
-                Device.SendXGBulkDumpRequest(0x030000);
-                Device.SendXGBulkDumpRequest(0x030020);
-                Device.SendXGBulkDumpRequest(0x030100);
-                Device.SendXGBulkDumpRequest(0x030120);
-                Device.SendXGBulkDumpRequest(0x030200);
-                Device.SendXGBulkDumpRequest(0x030220);
-                Device.SendXGBulkDumpRequest(0x030300);
-                Device.SendXGBulkDumpRequest(0x030320);
-                Device.SendXGBulkDumpRequest(0x030300);
-                Device.SendXGBulkDumpRequest(0x030320);
-
-                for (int i = 0; i < 16; i++)
+                lock(Device)
                 {
-                    Device.SendXGBulkDumpRequest(0x080000 | i << 8);
-                    Device.SendXGBulkDumpRequest(0x080030 | i << 8);
-                    Device.SendXGBulkDumpRequest(0x080070 | i << 8);
-                    Device.SendXGBulkDumpRequest(0x080074 | i << 8);
-                    Device.SendXGBulkDumpRequest(0x0A0020 | i << 8);
-                }
+                    Device.SendXGBulkDumpRequest(0x000000);
+                    Device.SendXGBulkDumpRequest(0x010000);
+                    Device.SendXGBulkDumpRequest(0x020100);
+                    Device.SendXGBulkDumpRequest(0x020110);
+                    Device.SendXGBulkDumpRequest(0x020120);
+                    Device.SendXGBulkDumpRequest(0x020130);
+                    Device.SendXGBulkDumpRequest(0x020140);
+                    Device.SendXGBulkDumpRequest(0x020170);
+                    Device.SendXGBulkDumpRequest(0x024000);
+                    Device.SendXGBulkDumpRequest(0x030000);
+                    Device.SendXGBulkDumpRequest(0x030020);
+                    Device.SendXGBulkDumpRequest(0x030100);
+                    Device.SendXGBulkDumpRequest(0x030120);
+                    Device.SendXGBulkDumpRequest(0x030200);
+                    Device.SendXGBulkDumpRequest(0x030220);
+                    Device.SendXGBulkDumpRequest(0x030300);
+                    Device.SendXGBulkDumpRequest(0x030320);
+                    Device.SendXGBulkDumpRequest(0x030300);
+                    Device.SendXGBulkDumpRequest(0x030320);
 
-                for (int i = 0; i < 2; i++)
-                {
-                    for (int j = 0x0d; j <= 0x5B; j++)
+                    for (int i = 0; i < 16; i++)
                     {
-                        Device.SendXGBulkDumpRequest(0x300000 | i << 16 | j << 8);
-                        Device.SendXGBulkDumpRequest(0x300020 | i << 16 | j << 8);
-                        Device.SendXGBulkDumpRequest(0x300050 | i << 16 | j << 8);
-                        Device.SendXGBulkDumpRequest(0x300060 | i << 16 | j << 8);
+                        Device.SendXGBulkDumpRequest(0x080000 | i << 8);
+                        Device.SendXGBulkDumpRequest(0x080030 | i << 8);
+                        Device.SendXGBulkDumpRequest(0x080070 | i << 8);
+                        Device.SendXGBulkDumpRequest(0x080074 | i << 8);
+                        Device.SendXGBulkDumpRequest(0x0A0020 | i << 8);
                     }
+
+                    for (int i = 0; i < 2; i++)
+                    {
+                        for (int j = 0x0d; j <= 0x5B; j++)
+                        {
+                            Device.SendXGBulkDumpRequest(0x300000 | i << 16 | j << 8);
+                            Device.SendXGBulkDumpRequest(0x300020 | i << 16 | j << 8);
+                            Device.SendXGBulkDumpRequest(0x300050 | i << 16 | j << 8);
+                            Device.SendXGBulkDumpRequest(0x300060 | i << 16 | j << 8);
+                        }
+                    }
+                    progressBar1.Style = ProgressBarStyle.Marquee;
                 }
 
                 xgpGrid1.RedrawOnRequestComplete();
