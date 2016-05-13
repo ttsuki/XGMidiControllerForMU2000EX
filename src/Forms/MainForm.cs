@@ -47,6 +47,8 @@ namespace Tsukikage.XGTGCtrl2.Forms
         {
             Size sz = tabControl1.SelectedTab.Controls[0].Size + new Size(12, 12);
             this.Size = sz + new Size(x, y);
+            effectParameterGrid1.ReCreateScreen();
+            effectParameterGrid2.ReCreateScreen();
             tabControl1.Invalidate();
 
         }

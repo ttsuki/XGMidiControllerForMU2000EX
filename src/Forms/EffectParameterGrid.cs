@@ -217,7 +217,7 @@ namespace Tsukikage.XGTGCtrl2.Forms
             }
         }
 
-        void ReCreateScreen()
+        public void ReCreateScreen()
         {
             Effects.Clear();
             XGControls.Clear();
