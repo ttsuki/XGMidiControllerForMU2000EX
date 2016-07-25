@@ -122,7 +122,8 @@ namespace Tsukikage.XGTGCtrl2.Forms
                 var pgnameCell = AddLabelCell("", x, y, 3, Color.Lime); x += 3;
 
                 Getter<MidiProgramNumber> getCurrentProgram = () => new MidiProgramNumber(msbCell.TargetParameter.Value, lsbCell.TargetParameter.Value, pgnCell.TargetParameter.Value);
-                Action<MidiProgramNumber> setCurrentProgram = pn => {
+                Action<MidiProgramNumber> setCurrentProgram = pn =>
+                {
                     msbCell.TargetParameter.Value = pn.BankMSB;
                     lsbCell.TargetParameter.Value = pn.BankLSB;
                     pgnCell.TargetParameter.Value = pn.ProgramNumber;
@@ -206,15 +207,15 @@ namespace Tsukikage.XGTGCtrl2.Forms
 @"
 Function TrackParam(_ch, _pgm,_pgl,_pgc, _vol=100, _pan=0, _rev=40,_cho=0,_var=0, _lpf=0, _rsn=0, _hpf=0, _eqbf=$0C, _eqbg=0, _eqtf=$36, _eqtg=0)
 {
-	CH = _ch;
-	@_pgc,_pgm,_pgl; r%1
-	MainVolume(_vol) r%1 Panpot(64+_pan) r%1
-	Reverb(_rev) r%5 Chorus(_cho) r%5 VAR(_var) r%1
-	FilterCutoff(_lpf+64); r%5 FilterResonance(_rsn+64); r%1; NRPN(1,$24,_hpf+64); r%1;
-	NRPN(1,$34,_eqbf) r%1 // EQ Bass Freq
-	NRPN(1,$30,_eqbg+64) r%1 // EQ Bass Gain
-	NRPN(1,$35,_eqtf) r%1 // EQ Treble Freq
-	NRPN(1,$31,_eqtg+64) r%1 // EQ Treble Gain
+    CH = _ch;
+    @_pgc,_pgm,_pgl; r%1
+    MainVolume(_vol) r%1 Panpot(64+_pan) r%1
+    Reverb(_rev) r%5 Chorus(_cho) r%5 VAR(_var) r%1
+    FilterCutoff(_lpf+64); r%5 FilterResonance(_rsn+64); r%1; NRPN(1,$24,_hpf+64); r%1;
+    NRPN(1,$34,_eqbf+$0C) r%1 // EQ Bass Freq
+    NRPN(1,$30,_eqbg+64) r%1 // EQ Bass Gain
+    NRPN(1,$35,_eqtf+$34) r%1 // EQ Treble Freq
+    NRPN(1,$31,_eqtg+64) r%1 // EQ Treble Gain
 //	SysEx =$F0, $43,$10,$4C, $08,(Channel-1),$32, $00, $F7;
 }
 
@@ -229,15 +230,16 @@ Function TrackParam(_ch, _pgm,_pgl,_pgc, _vol=100, _pan=0, _rev=40,_cho=0,_var=0
                     + "{6,3},{7,3},{8,3},\t"
                     + "{10,3:+##;-##;##0},{11,3:+##;-##;##0},{12,3:+##;-##;##0},\t"
                     //+ "{13,3:+##;-##;##0},{14,3:+##;-##;##0},{15,3:+##;-##;##0},\t"
-                    + "{16:#},{17:+##;-##;###},{18:#},{19:+##;-##;###}"
+                    + "{16:+##;-##;###},{17:+##;-##;###},{18:+##;-##;###},{19:+##;-##;###}"
                     + ");\n",
-                    p.Channel+1, 
-                    p.ProgramMSB.Value,p.ProgramLSB.Value,p.ProgramNumber.Value, p.Volume.Value, p.Pan.Value - 64,
+                    p.Channel + 1,
+                    p.ProgramMSB.Value, p.ProgramLSB.Value, p.ProgramNumber.Value + 1,
+                    p.Volume.Value, p.Pan.Value - 64,
                     p.Reverb.Value, p.Chorus.Value, p.Variation.Value, p.DryLevel.Value,
-                    p.LPFCutoffFreq.Value-64, p.LPFResonance.Value-64, p.HPFCutoffFreq.Value-64,
-                    p.VibRate.Value-64, p.VibDepth.Value-64, p.VibDelay.Value-64,
-                    p.EQBassFreq.Value != 0x0C ? p.EQBassFreq.Value : 0, p.EQBassGain.Value-64,
-                    p.EQTrebleFreq.Value != 0x36 ? p.EQTrebleFreq.Value : 0, p.EQTrebleGain.Value - 64
+                    p.LPFCutoffFreq.Value - 64, p.LPFResonance.Value - 64, p.HPFCutoffFreq.Value - 64,
+                    p.VibRate.Value - 64, p.VibDepth.Value - 64, p.VibDelay.Value - 64,
+                    p.EQBassFreq.Value != 0x0C ? p.EQBassFreq.Value - 0x0C : 0, p.EQBassGain.Value - 64,
+                    p.EQTrebleFreq.Value != 0x36 ? p.EQTrebleFreq.Value - 0x36 : 0, p.EQTrebleGain.Value - 64
                     );
             }
             CopyToClipboard(mml.ToString());
