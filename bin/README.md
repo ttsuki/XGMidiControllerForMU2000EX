@@ -29,6 +29,7 @@ XGMidiControllerForMU2000EX
  MIDI Port/XG SYSTEMブロックのMIDI Parameterを変更します。
  + [CONNECTION TEST]  → 音源のSYSTEM INFORMATIONブロックからModel Nameの取得を試みます。
  + [XG SYSTEM ON] → XG System Onを送出します。
+ + [RESET All] → 今設定されているパラメータをデフォルト値にリセットします。
  + [Dump] → MaterVol., MasterAttn., Transpose, MasterTune の値を音源から取得します。
  + [AllDump] → Deviceタブと、他のすべてのタブで設定可能なパラメータを音源から取得します。
  + アイコンはバージョン情報、MIDI LOGボタンはログ表示・非表示を切り替えます。
@@ -39,9 +40,9 @@ XGMidiControllerForMU2000EX
  + Program名をクリックすると、LSB/PG#を次の音色まで進められるので、音色を探すときに便利です。
  * 音色はMU2000EXに準拠し、作者の個人的事情でMSB#32にはPLG150-PFの設定が入っています。
 
-### Drum1/Drum2タブ
+### Drum1/Drum2/Drum3/Drum4 タブ
  DRUM SETUPブロックのパラメータを設定・取得します。
- Drum1タブはS1に、Drum2タブはS2のパラメータを扱います。
+ Drum1タブはS1に、Drum2タブはS2、Drum3タブはS3、Drum4タブはS4のパラメータを扱います。
  + 右上のボックスに参照するCHと、グリッドに表示したいNoteNumberを入力します。
  + N #のカラムは左ダブルクリックで1行再送、右クリックでAUDITIONできます。
  * Part1タブで設定しているドラムキットのノート名が表示されます。
