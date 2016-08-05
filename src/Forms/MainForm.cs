@@ -7,10 +7,15 @@ namespace Tsukikage.XGTGCtrl2.Forms
 {
     public partial class MainForm : Form
     {
-        XGMidiIODevice Device;
+        private XGMidiIODevice Device { get; set; }
+        private readonly int x_;
+        private readonly int y_;
+
         public MainForm()
         {
             this.Font = new System.Drawing.Font(Config.FontFace, Config.FontSize);
+            this.Text = Util.EntryAssemblyInformation.Title;
+
             Device = new XGMidiIODevice();
             Device.ResetXG();
             InitializeComponent();
@@ -23,17 +28,13 @@ namespace Tsukikage.XGTGCtrl2.Forms
             this.effectParameterGrid1.SetDevice(Device); this.effectParameterGrid1.SizeChanged += (s, e) => FitClientSize();
             this.effectParameterGrid2.SetDevice(Device); this.effectParameterGrid2.SizeChanged += (s, e) => FitClientSize();
             this.multiEQParameterGrid1.SetDevice(Device); this.multiEQParameterGrid1.SizeChanged += (s, e) => FitClientSize();
-            tabControl1.TabPages.RemoveAt(4);
-            tabControl1.TabPages.RemoveAt(4);
             
-            x = this.Size.Width - tabControl1.SelectedTab.ClientSize.Width;
-            y = this.Size.Height - tabControl1.SelectedTab.ClientSize.Height;
+            x_ = this.Size.Width - tabControl1.SelectedTab.ClientSize.Width;
+            y_ = this.Size.Height - tabControl1.SelectedTab.ClientSize.Height;
             FitClientSize();
 
-            Text = Util.EntryAssemblyInformation.Title;
         }
 
-        int x, y;
         private void Form1_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (Device != null)
@@ -46,7 +47,7 @@ namespace Tsukikage.XGTGCtrl2.Forms
         void FitClientSize()
         {
             Size sz = tabControl1.SelectedTab.Controls[0].Size + new Size(12, 12);
-            this.Size = sz + new Size(x, y);
+            this.Size = sz + new Size(x_, y_);
             effectParameterGrid1.ReCreateScreen();
             effectParameterGrid2.ReCreateScreen();
             tabControl1.Invalidate();
