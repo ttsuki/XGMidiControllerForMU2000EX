@@ -58,7 +58,7 @@
             this.comboBoxMidiOutSelect.FormattingEnabled = true;
             this.comboBoxMidiOutSelect.Location = new System.Drawing.Point(30, 29);
             this.comboBoxMidiOutSelect.Name = "comboBoxMidiOutSelect";
-            this.comboBoxMidiOutSelect.Size = new System.Drawing.Size(346, 20);
+            this.comboBoxMidiOutSelect.Size = new System.Drawing.Size(378, 20);
             this.comboBoxMidiOutSelect.TabIndex = 9;
             this.comboBoxMidiOutSelect.SelectedIndexChanged += new System.EventHandler(this.comboBoxMidiOutSelect_SelectedIndexChanged);
             // 
@@ -77,7 +77,7 @@
             this.comboBoxMidiInSelect.FormattingEnabled = true;
             this.comboBoxMidiInSelect.Location = new System.Drawing.Point(30, 3);
             this.comboBoxMidiInSelect.Name = "comboBoxMidiInSelect";
-            this.comboBoxMidiInSelect.Size = new System.Drawing.Size(346, 20);
+            this.comboBoxMidiInSelect.Size = new System.Drawing.Size(378, 20);
             this.comboBoxMidiInSelect.TabIndex = 7;
             this.comboBoxMidiInSelect.SelectedIndexChanged += new System.EventHandler(this.comboBoxMidiInSelect_SelectedIndexChanged);
             // 

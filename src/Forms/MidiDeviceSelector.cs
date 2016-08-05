@@ -66,9 +66,10 @@ namespace Tsukikage.XGTGCtrl2.Forms
             MasterTune.WriteValueEncoding = v => v & 0xF | (v & 0xF0) << 3 | (v & 0xF00) << 6;
             MasterTune.ToStringConverter = v => ((v - 1024) / 10).ToString("+000;-000") + "." + ((v - 1024) % 10).ToString();
 
-
+            int w = 5;
+            int x = 7;
             int y = -2;
-            xgpGrid1.AddTriggerCell("[CONNECTION TEST]", 0, y, 6, Color.Gray, () =>
+            xgpGrid1.AddTriggerCell("[CONNECTION TEST]", x, y, w, Color.Gray, () =>
             {
                 Device.WriteXGParam(0x10000, 4, 0);
                 Device.WriteXGParam(0x10004, 4, 0);
@@ -92,35 +93,34 @@ namespace Tsukikage.XGTGCtrl2.Forms
             }).GetDescriptionFunc = () => "DblClick: Request DeviceName";
             y++;
 
-            xgpGrid1.AddTriggerCell("[XG SYSTEM ON]", 0, y, 6, Color.Red, () =>
+            xgpGrid1.AddTriggerCell("[XG SYSTEM ON]", x, y, w, Color.Red, () =>
             {
                 if (MessageBox.Show("Send XG SYSTEM ON?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
                 {
                     Device.SendXGParameterByValue(0x00007E, 0, 1);
-                    Device.ResetXG();
                     xgpGrid1.RedrawOnRequestComplete();
                 }
             }).GetDescriptionFunc = () => "DblClick: Send XG SYSTEM ON.";
             y++;
 
-            xgpGrid1.AddTriggerCell("[Dump]", 0, y, 6, Color.Black, () =>
+            xgpGrid1.AddTriggerCell("[RESET All]", x, y, w, Color.Maroon, () =>
             {
-                MasterVolume.Pick();
-                MasterAttn.Pick();
-                MasterTune.Pick();
-                MasterTranspose.Pick();
-                xgpGrid1.RedrawOnRequestComplete();
-            }).GetDescriptionFunc = () => "DblClick: Request Dump parameters.";
+                if (MessageBox.Show("Reset all parameters?", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                {
+                    Device.ResetXG();
+                    xgpGrid1.RedrawOnRequestComplete();
+                }
+            }).GetDescriptionFunc = () => "DblClick: Reset all parameters.";
             y++;
 
-            xgpGrid1.AddTriggerCell("[AllDump]", 0, y, 6, Color.Black, () =>
+            xgpGrid1.AddTriggerCell("[AllDump]", x, y, w, Color.Black, () =>
             {
-                if (MessageBox.Show("Dump ALL XG Parameters?\n Including 16 parts, drum S1+S2, effects settings.", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
+                if (MessageBox.Show("Dump ALL XG Parameters?\n Including A1-A16 parts, drum S1-S4, Sys/INS effects settings.", "Confirmation", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) != DialogResult.OK)
                 {
                     return;
                 }
 
-                lock(Device)
+                lock (Device)
                 {
                     Device.SendXGBulkDumpRequest(0x000000);
                     Device.SendXGBulkDumpRequest(0x010000);
@@ -151,7 +151,7 @@ namespace Tsukikage.XGTGCtrl2.Forms
                         Device.SendXGBulkDumpRequest(0x0A0020 | i << 8);
                     }
 
-                    for (int i = 0; i < 2; i++)
+                    for (int i = 0; i < 4; i++)
                     {
                         for (int j = 0x0d; j <= 0x5B; j++)
                         {
@@ -168,17 +168,30 @@ namespace Tsukikage.XGTGCtrl2.Forms
             }).GetDescriptionFunc = () => "DblClick: Request Dump all XG Params.";
             y++;
 
-            xgpGrid1.AddLabelCell("MasterVolume", 0, y, 4, Color.Green);
-            xgpGrid1.AddControlCell(MasterVolume, 4, y, 2, Color.Lime);
+            x = 0;
+            y = -2;
+            w = 6;
+            xgpGrid1.AddTriggerCell("[Dump]", x, y, w, Color.Black, () =>
+            {
+                MasterVolume.Pick();
+                MasterAttn.Pick();
+                MasterTune.Pick();
+                MasterTranspose.Pick();
+                xgpGrid1.RedrawOnRequestComplete();
+            }).GetDescriptionFunc = () => "DblClick: Request Dump parameters.";
             y++;
-            xgpGrid1.AddLabelCell("MasterAttn", 0, y, 4, Color.Navy);
-            xgpGrid1.AddControlCell(MasterAttn, 4, y, 2, Color.Blue);
+
+            xgpGrid1.AddLabelCell("MasterVolume", x, y, w - 2, Color.Green);
+            xgpGrid1.AddControlCell(MasterVolume, x + w - 2, y, 2, Color.Lime);
             y++;
-            xgpGrid1.AddLabelCell("Transpose", 0, y, 4, Color.Olive);
-            xgpGrid1.AddControlCell(MasterTranspose, 4, y, 2, Color.Yellow);
+            xgpGrid1.AddLabelCell("MasterAttn", x, y, w - 2, Color.Navy);
+            xgpGrid1.AddControlCell(MasterAttn, x + w - 2, y, 2, Color.Blue);
             y++;
-            xgpGrid1.AddLabelCell("MasterTune", 0, y, 4, Color.Purple);
-            xgpGrid1.AddControlCell(MasterTune, 4, y, 2, Color.Magenta);
+            xgpGrid1.AddLabelCell("Transpose", x, y, w - 2, Color.Olive);
+            xgpGrid1.AddControlCell(MasterTranspose, x + w - 2, y, 2, Color.Yellow);
+            y++;
+            xgpGrid1.AddLabelCell("MasterTune", x, y, w - 2, Color.Purple);
+            xgpGrid1.AddControlCell(MasterTune, x + w - 2, y, 2, Color.Magenta);
             y++;
             xgpGrid1.SetDevice(Device);
         }
