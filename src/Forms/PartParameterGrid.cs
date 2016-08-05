@@ -205,29 +205,39 @@ namespace Tsukikage.XGTGCtrl2.Forms
             mml.Append(
 
 @"
-Function TrackParam(_ch, _pgm,_pgl,_pgc, _vol=100, _pan=0, _rev=40,_cho=0,_var=0, _lpf=0,_rsn=0,_hpf=0, _ega=0,_egd=0,_egr=0, _vrt=0,_vdp=0,_vdl=0, _eqbf=$0C, _eqbg=0, _eqtf=$36, _eqtg=0)
+Function XGNrpn(Int _msb, Int _lsb, Int _data) { y99,_msb y98,_lsb y6,_data }
+Function TrackParam(_ch, _pgm,_pgl,_pgc, _vol=100, _pan=0, _rev=40,_cho=0,_var=0,_dry=0, _lpf=0,_rsn=0,_hpf=0, _ega=0,_egd=0,_egr=0, _vrt=0,_vdp=0,_vdl=0, _eqbf=$0C, _eqbg=0, _eqtf=$36, _eqtg=0)
 {
     CH = _ch;
-    @_pgc,_pgm,_pgl; r%1
-    MainVolume(_vol) r%1 Panpot(64+_pan) r%1
-    Reverb(_rev) r%5 Chorus(_cho) r%5 VAR(_var) r%1
-    FilterCutoff(_lpf+64); r%5 FilterResonance(_rsn+64); r%1; NRPN(1,$24,_hpf+64); r%1;
+    @_pgc,_pgm,_pgl
+    MainVolume(_vol)
+    Panpot(64+_pan)
+    Reverb(_rev)
+    Chorus(_cho)
+    VAR(_var)
+    XGXcl1($080011 | (_ch*256), _dry) // Dry Send Level
 
-    NRPN(1,$63,_ega+64) r%1 // EG Atk
-    NRPN(1,$64,_egd+64) r%1 // EQ Dcy
-    NRPN(1,$66,_egr+64) r%1 // EQ Rls
-    NRPN(1,$08,_vrt+64) r%1 // Vib Rat
-    NRPN(1,$09,_vdp+64) r%1 // Vib Dpt
-    NRPN(1,$0A,_vdl+64) r%1 // Vib Dly
+    XGNrpn(1,$20,_lpf+64) // LPF Freq
+    XGNrpn(1,$21,_rsn+64) // LPF Reso
+    XGNrpn(1,$24,_hpf+64) // HPF Freq
 
-    NRPN(1,$34,_eqbf+$0C) r%1 // EQ Bass Freq
-    NRPN(1,$30,_eqbg+64) r%1 // EQ Bass Gain
-    NRPN(1,$35,_eqtf+$36) r%1 // EQ Treble Freq
-    NRPN(1,$31,_eqtg+64) r%1 // EQ Treble Gain
-//	SysEx =$F0, $43,$10,$4C, $08,(Channel-1),$32, $00, $F7;
+    XGNrpn(1,$63,_ega+64) // EG Atk
+    XGNrpn(1,$64,_egd+64) // EQ Dcy
+    XGNrpn(1,$66,_egr+64) // EQ Rls
+
+    XGNrpn(1,$08,_vrt+64) // Vib Rat
+    XGNrpn(1,$09,_vdp+64) // Vib Dpt
+    XGNrpn(1,$0A,_vdl+64) // Vib Dly
+
+    XGNrpn(1,$34,_eqbf+12) // EQ Bass Freq
+    XGNrpn(1,$30,_eqbg+64) // EQ Bass Gain
+    XGNrpn(1,$35,_eqtf+54) // EQ Treble Freq
+    XGNrpn(1,$31,_eqtg+64) // EQ Treble Gain
+    r32
+}
 }
 
-//ackParam(CH,	MSB,LSB,PG#,	VOL,PAN,	REV,CHO,VAR,	LPF,RSN,HPF,	EGA,EGD,EGR,	VRt,VDp,VDl,	BFq,BGa,TFq,TGa
+//ackParam(CH,	MSB,LSB,PG#,	VOL,PAN,	REV,CHO,VAR,DRY,	LPF,RSN,HPF,	EGA,EGD,EGR,	VRt,VDp,VDl,	BFq,BGa,TFq,TGa
 ");
 
             for (int i = 0; i < Channels.Count; i++)
@@ -235,7 +245,7 @@ Function TrackParam(_ch, _pgm,_pgl,_pgc, _vol=100, _pan=0, _rev=40,_cho=0,_var=0
                 XGPartParams p = Channels[i];
                 mml.AppendFormat(
                     "TrackParam({0,2},\t{1,3},{2,3},{3,3},\t{4,3},{5,3:+#0;-#0;##0},\t"
-                    + "{6,3},{7,3},{8,3},\t"
+                    + "{6,3},{7,3},{8,3},{9,3},\t"
                     + "{10,3:+##;-##;##0},{11,3:+##;-##;##0},{12,3:+##;-##;##0},\t"
                     + "{13,3:+##;-##;##0},{14,3:+##;-##;##0},{15,3:+##;-##;##0},\t"
                     + "{16,3:+##;-##;##0},{17,3:+##;-##;##0},{18,3:+##;-##;##0},\t"
