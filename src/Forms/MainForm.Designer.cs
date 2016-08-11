@@ -48,6 +48,9 @@
             this.effectParameterGrid2 = new Tsukikage.XGTGCtrl2.Forms.EffectParameterGrid();
             this.tabPageEQ = new System.Windows.Forms.TabPage();
             this.multiEQParameterGrid1 = new Tsukikage.XGTGCtrl2.Forms.MultiEQParameterGrid();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.globalToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.copyToClipboardAsMMLToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPageDrumMap4.SuspendLayout();
             this.tabPageDrumMap3.SuspendLayout();
             this.tabPageEffect1.SuspendLayout();
@@ -58,6 +61,7 @@
             this.tabControl1.SuspendLayout();
             this.tabPageEffect2.SuspendLayout();
             this.tabPageEQ.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabPageDrumMap4
@@ -66,7 +70,7 @@
             this.tabPageDrumMap4.Location = new System.Drawing.Point(4, 22);
             this.tabPageDrumMap4.Name = "tabPageDrumMap4";
             this.tabPageDrumMap4.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDrumMap4.Size = new System.Drawing.Size(818, 264);
+            this.tabPageDrumMap4.Size = new System.Drawing.Size(818, 238);
             this.tabPageDrumMap4.TabIndex = 6;
             this.tabPageDrumMap4.Text = "Drum4";
             this.tabPageDrumMap4.UseVisualStyleBackColor = true;
@@ -86,7 +90,7 @@
             this.tabPageDrumMap3.Location = new System.Drawing.Point(4, 22);
             this.tabPageDrumMap3.Name = "tabPageDrumMap3";
             this.tabPageDrumMap3.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDrumMap3.Size = new System.Drawing.Size(818, 264);
+            this.tabPageDrumMap3.Size = new System.Drawing.Size(818, 238);
             this.tabPageDrumMap3.TabIndex = 5;
             this.tabPageDrumMap3.Text = "Drum3";
             this.tabPageDrumMap3.UseVisualStyleBackColor = true;
@@ -106,7 +110,7 @@
             this.tabPageEffect1.Location = new System.Drawing.Point(4, 22);
             this.tabPageEffect1.Name = "tabPageEffect1";
             this.tabPageEffect1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageEffect1.Size = new System.Drawing.Size(818, 264);
+            this.tabPageEffect1.Size = new System.Drawing.Size(818, 238);
             this.tabPageEffect1.TabIndex = 4;
             this.tabPageEffect1.Text = "Effect1";
             this.tabPageEffect1.UseVisualStyleBackColor = true;
@@ -125,7 +129,7 @@
             this.tabPageDrumMap2.Location = new System.Drawing.Point(4, 22);
             this.tabPageDrumMap2.Name = "tabPageDrumMap2";
             this.tabPageDrumMap2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDrumMap2.Size = new System.Drawing.Size(818, 264);
+            this.tabPageDrumMap2.Size = new System.Drawing.Size(818, 238);
             this.tabPageDrumMap2.TabIndex = 2;
             this.tabPageDrumMap2.Text = "Drum2";
             this.tabPageDrumMap2.UseVisualStyleBackColor = true;
@@ -145,7 +149,7 @@
             this.tabPageDrumMap1.Location = new System.Drawing.Point(4, 22);
             this.tabPageDrumMap1.Name = "tabPageDrumMap1";
             this.tabPageDrumMap1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDrumMap1.Size = new System.Drawing.Size(818, 264);
+            this.tabPageDrumMap1.Size = new System.Drawing.Size(818, 238);
             this.tabPageDrumMap1.TabIndex = 1;
             this.tabPageDrumMap1.Text = "Drum1";
             this.tabPageDrumMap1.UseVisualStyleBackColor = true;
@@ -165,7 +169,7 @@
             this.tabPagePart.Location = new System.Drawing.Point(4, 22);
             this.tabPagePart.Name = "tabPagePart";
             this.tabPagePart.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPagePart.Size = new System.Drawing.Size(818, 264);
+            this.tabPagePart.Size = new System.Drawing.Size(818, 238);
             this.tabPagePart.TabIndex = 3;
             this.tabPagePart.Text = "Part1";
             this.tabPagePart.UseVisualStyleBackColor = true;
@@ -184,7 +188,7 @@
             this.tabPageDevice.Location = new System.Drawing.Point(4, 22);
             this.tabPageDevice.Name = "tabPageDevice";
             this.tabPageDevice.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageDevice.Size = new System.Drawing.Size(818, 264);
+            this.tabPageDevice.Size = new System.Drawing.Size(818, 238);
             this.tabPageDevice.TabIndex = 0;
             this.tabPageDevice.Text = "Device";
             // 
@@ -208,10 +212,10 @@
             this.tabControl1.Controls.Add(this.tabPageEffect2);
             this.tabControl1.Controls.Add(this.tabPageEQ);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 0);
+            this.tabControl1.Location = new System.Drawing.Point(0, 26);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(826, 290);
+            this.tabControl1.Size = new System.Drawing.Size(826, 264);
             this.tabControl1.TabIndex = 0;
             this.tabControl1.SelectedIndexChanged += new System.EventHandler(this.tabControl1_SelectedIndexChanged);
             // 
@@ -221,7 +225,7 @@
             this.tabPageEffect2.Location = new System.Drawing.Point(4, 22);
             this.tabPageEffect2.Name = "tabPageEffect2";
             this.tabPageEffect2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageEffect2.Size = new System.Drawing.Size(818, 264);
+            this.tabPageEffect2.Size = new System.Drawing.Size(818, 238);
             this.tabPageEffect2.TabIndex = 8;
             this.tabPageEffect2.Text = "Effect2";
             this.tabPageEffect2.UseVisualStyleBackColor = true;
@@ -240,7 +244,7 @@
             this.tabPageEQ.Location = new System.Drawing.Point(4, 22);
             this.tabPageEQ.Name = "tabPageEQ";
             this.tabPageEQ.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPageEQ.Size = new System.Drawing.Size(818, 264);
+            this.tabPageEQ.Size = new System.Drawing.Size(818, 238);
             this.tabPageEQ.TabIndex = 7;
             this.tabPageEQ.Text = "MultiEQ";
             this.tabPageEQ.UseVisualStyleBackColor = true;
@@ -252,12 +256,38 @@
             this.multiEQParameterGrid1.Size = new System.Drawing.Size(606, 467);
             this.multiEQParameterGrid1.TabIndex = 0;
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.globalToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(826, 26);
+            this.menuStrip1.TabIndex = 1;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // globalToolStripMenuItem
+            // 
+            this.globalToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyToClipboardAsMMLToolStripMenuItem});
+            this.globalToolStripMenuItem.Name = "globalToolStripMenuItem";
+            this.globalToolStripMenuItem.Size = new System.Drawing.Size(56, 22);
+            this.globalToolStripMenuItem.Text = "&Global";
+            // 
+            // copyToClipboardAsMMLToolStripMenuItem
+            // 
+            this.copyToClipboardAsMMLToolStripMenuItem.Name = "copyToClipboardAsMMLToolStripMenuItem";
+            this.copyToClipboardAsMMLToolStripMenuItem.Size = new System.Drawing.Size(214, 22);
+            this.copyToClipboardAsMMLToolStripMenuItem.Text = "&CopyToClipboardAsMML";
+            this.copyToClipboardAsMMLToolStripMenuItem.Click += new System.EventHandler(this.copyToClipboardAsMMLToolStripMenuItem_Click);
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(826, 290);
             this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.menuStrip1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
@@ -274,7 +304,10 @@
             this.tabControl1.ResumeLayout(false);
             this.tabPageEffect2.ResumeLayout(false);
             this.tabPageEQ.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -299,7 +332,9 @@
         private Forms.MultiEQParameterGrid multiEQParameterGrid1;
         private System.Windows.Forms.TabPage tabPageEffect2;
         private Forms.EffectParameterGrid effectParameterGrid2;
-
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem globalToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem copyToClipboardAsMMLToolStripMenuItem;
     }
 }
 

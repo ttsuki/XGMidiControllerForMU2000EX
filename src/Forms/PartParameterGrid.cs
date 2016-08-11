@@ -22,9 +22,10 @@ namespace Tsukikage.XGTGCtrl2.Forms
                 int x = 0;
                 int y0 = 0;
                 int y1 = 1;
-                AddLabelCell("Part", x, y0, 2, Color.Black);
+                AddLabelCell("Part", x, y0, 3, Color.Black);
                 AddLabelCell("CH#", x, y1, 1, Color.Black); x++;
                 AddLabelCell("ON", x, y1, 1, Color.DarkGray); x++;
+                AddLabelCell("Md", x, y1, 1, Color.DarkGray); x++;
 
                 AddLabelCell("Program", x, y0, 6, Color.Green);
                 AddLabelCell("MSB", x, y1, 1, Color.Green); x++;
@@ -63,13 +64,13 @@ namespace Tsukikage.XGTGCtrl2.Forms
                 AddLabelCell("TFr", x, y1, 1, Color.Olive); x++;
                 AddLabelCell("TGa", x, y1, 1, Color.Olive); x++;
 
-                AddLabelCell("MW", x, y0, 6, Color.Purple);
-                AddLabelCell("Pit", x, y1, 1, Color.Purple); x++;
-                AddLabelCell("LPF", x, y1, 1, Color.Purple); x++;
-                AddLabelCell("Amp", x, y1, 1, Color.Purple); x++;
-                AddLabelCell("PMd", x, y1, 1, Color.Purple); x++;
-                AddLabelCell("FMd", x, y1, 1, Color.Purple); x++;
-                AddLabelCell("AMd", x, y1, 1, Color.Purple); x++;
+                //AddLabelCell("MW", x, y0, 6, Color.Purple);
+                //AddLabelCell("Pit", x, y1, 1, Color.Purple); x++;
+                //AddLabelCell("LPF", x, y1, 1, Color.Purple); x++;
+                //AddLabelCell("Amp", x, y1, 1, Color.Purple); x++;
+                //AddLabelCell("PMd", x, y1, 1, Color.Purple); x++;
+                //AddLabelCell("FMd", x, y1, 1, Color.Purple); x++;
+                //AddLabelCell("AMd", x, y1, 1, Color.Purple); x++;
             }
 
             for (int i = 0; i < 16; i++)
@@ -81,6 +82,7 @@ namespace Tsukikage.XGTGCtrl2.Forms
                 XGPartParams param = new XGPartParams(Device, channel);
                 Channels.Add(param);
 
+                // #xx
                 cell = AddTriggerCell((i + 1).ToString(), x, y, 1, Color.Black, () => param.ReSendAll()); x++;
                 bool noteOn = false;
                 cell.Decrement = () =>
@@ -100,21 +102,27 @@ namespace Tsukikage.XGTGCtrl2.Forms
                 };
                 cell.GetDescriptionFunc = () => "DblClick: ReSend / RightClick: AUDITION";
 
+
+                // ON/OFF
                 cell = AddControlCell(param.RcvNoteMessage, x, y, 1, Color.LightGray); x++;
-                cell.Decrement += () => { Device.Write(0x0078B0 + i); }; // all sound off
+                cell.Decrement += () => { Device.Write(0x0078B0 + channel); }; // all sound off
                 cell.Trigger = () =>
                     {
                         for (int j = 0; j < 16; j++)
                         {
                             if (j != param.Channel)
                             {
-                                Device.WriteXGParam(0x080035 | j << 8, 1, 0);
                                 Device.Write(0x0078B0 + j);
                             }
+                            Device.WriteXGParam(0x080035 | j << 8, 1, j == param.Channel ? 1 : 0);
+                            Device.SendXGParameterByValue(0x080035 | j << 8, j == param.Channel ? 1 : 0, 1);
                         }
                         Invalidate();
                     };
 
+
+                // #mode
+                cell = AddControlCell(param.PartMode, x, y, 1, Color.LightGray); x++;
 
                 var msbCell = AddControlCell(param.ProgramMSB, x, y, 1, Color.Lime); x++;
                 var lsbCell = AddControlCell(param.ProgramLSB, x, y, 1, Color.Lime); x++;
@@ -145,7 +153,6 @@ namespace Tsukikage.XGTGCtrl2.Forms
                 lsbCell.Increment += () => pgnCell.Offset(0);
                 lsbCell.Decrement += () => pgnCell.Offset(0);
 
-
                 AddControlCell(param.Volume, x, y, 1, Color.Lime); x++;
                 AddControlCell(param.Pan, x, y, 1, Color.Yellow); x++;
                 //cell = AddControlCell(param.Modulation, x, y, 1, Color.Blue); x++;
@@ -172,12 +179,12 @@ namespace Tsukikage.XGTGCtrl2.Forms
                 AddControlCell(param.EQTrebleFreq, x, y, 1, Color.Yellow); x++;
                 AddControlCell(param.EQTrebleGain, x, y, 1, Color.Yellow); x++;
 
-                AddControlCell(param.MWPitchControl, x, y, 1, Color.Magenta); x++;
-                AddControlCell(param.MWLPFControl, x, y, 1, Color.Magenta); x++;
-                AddControlCell(param.MWAmpControl, x, y, 1, Color.Magenta); x++;
-                AddControlCell(param.MWLFOPModDepth, x, y, 1, Color.Magenta); x++;
-                AddControlCell(param.MWLFOFModDepth, x, y, 1, Color.Magenta); x++;
-                AddControlCell(param.MWLFOAModDepth, x, y, 1, Color.Magenta); x++;
+                //AddControlCell(param.MWPitchControl, x, y, 1, Color.Magenta); x++;
+                //AddControlCell(param.MWLPFControl, x, y, 1, Color.Magenta); x++;
+                //AddControlCell(param.MWAmpControl, x, y, 1, Color.Magenta); x++;
+                //AddControlCell(param.MWLFOPModDepth, x, y, 1, Color.Magenta); x++;
+                //AddControlCell(param.MWLFOFModDepth, x, y, 1, Color.Magenta); x++;
+                //AddControlCell(param.MWLFOAModDepth, x, y, 1, Color.Magenta); x++;
             }
         }
 
@@ -199,17 +206,17 @@ namespace Tsukikage.XGTGCtrl2.Forms
             }
         }
 
-        private void buttonToMML_Click(object sender, EventArgs e)
+        public string GetMmlText()
         {
             StringBuilder mml = new StringBuilder();
             mml.Append(
 
 @"
-Function XGNrpn(Int _msb, Int _lsb, Int _data) { y99,_msb y98,_lsb y6,_data }
-Function TrackParam(_ch, _pgm,_pgl,_pgc, _vol=100, _pan=0, _rev=40,_cho=0,_var=0,_dry=0, _lpf=0,_rsn=0,_hpf=0, _ega=0,_egd=0,_egr=0, _vrt=0,_vdp=0,_vdl=0, _eqbf=$0C, _eqbg=0, _eqtf=$36, _eqtg=0)
+Function TrackParam(_ch,_md, _pgm,_pgl,_pgc, _vol=100, _pan=0, _rev=40,_cho=0,_var=0,_dry=0, _lpf=0,_rsn=0,_hpf=0, _ega=0,_egd=0,_egr=0, _vrt=0,_vdp=0,_vdl=0, _eqbf=$0C, _eqbg=0, _eqtf=$36, _eqtg=0)
 {
     CH = _ch;
-    @_pgc,_pgm,_pgl
+    XGXcl1($080007 | (_ch*256), _md) // Mode
+    ProgramChange(_pgc, _pgm, _pgl)
     MainVolume(_vol)
     Panpot(64+_pan)
     Reverb(_rev)
@@ -233,18 +240,17 @@ Function TrackParam(_ch, _pgm,_pgl,_pgc, _vol=100, _pan=0, _rev=40,_cho=0,_var=0
     XGNrpn(1,$30,_eqbg+64) // EQ Bass Gain
     XGNrpn(1,$35,_eqtf+54) // EQ Treble Freq
     XGNrpn(1,$31,_eqtg+64) // EQ Treble Gain
-    r32
-}
+    r%1
 }
 
-//ackParam(CH,	MSB,LSB,PG#,	VOL,PAN,	REV,CHO,VAR,DRY,	LPF,RSN,HPF,	EGA,EGD,EGR,	VRt,VDp,VDl,	BFq,BGa,TFq,TGa
+//ackParam(CH,M,	MSB,LSB,PG#,	VOL,PAN,	REV,CHO,VAR,DRY,	LPF,RSN,HPF,	EGA,EGD,EGR,	VRt,VDp,VDl,	BFq,BGa,TFq,TGa
 ");
 
             for (int i = 0; i < Channels.Count; i++)
             {
                 XGPartParams p = Channels[i];
                 mml.AppendFormat(
-                    "TrackParam({0,2},\t{1,3},{2,3},{3,3},\t{4,3},{5,3:+#0;-#0;##0},\t"
+                    "TrackParam({0,2},{23,1},\t{1,3},{2,3},{3,3},\t{4,3},{5,3:+#0;-#0;##0},\t"
                     + "{6,3},{7,3},{8,3},{9,3},\t"
                     + "{10,3:+##;-##;##0},{11,3:+##;-##;##0},{12,3:+##;-##;##0},\t"
                     + "{13,3:+##;-##;##0},{14,3:+##;-##;##0},{15,3:+##;-##;##0},\t"
@@ -259,10 +265,11 @@ Function TrackParam(_ch, _pgm,_pgl,_pgc, _vol=100, _pan=0, _rev=40,_cho=0,_var=0
                     p.EGAttack.Value - 64, p.EGDecay.Value - 64, p.EGRelease.Value - 64,
                     p.VibRate.Value - 64, p.VibDepth.Value - 64, p.VibDelay.Value - 64,
                     p.EQBassFreq.Value != 0x0C ? p.EQBassFreq.Value - 0x0C : 0, p.EQBassGain.Value - 64,
-                    p.EQTrebleFreq.Value != 0x36 ? p.EQTrebleFreq.Value - 0x36 : 0, p.EQTrebleGain.Value - 64
+                    p.EQTrebleFreq.Value != 0x36 ? p.EQTrebleFreq.Value - 0x36 : 0, p.EQTrebleGain.Value - 64,
+                    p.PartMode.Value
                     );
             }
-            CopyToClipboard(mml.ToString());
+            return mml.ToString();
         }
     }
 }

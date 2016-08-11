@@ -247,13 +247,9 @@ namespace Tsukikage.XGTGCtrl2.Forms
             }
         }
 
-        private void buttonToMML_Click(object sender, EventArgs e)
+        public string GetMmlText()
         {
             StringBuilder mml = new StringBuilder();
-            mml.Append(
-            @"Function XGXcl1(Int Address, Int _val) { SysEx = $F0, $43,$10,$4C, (Address / 65536 & $7F), (Address / 256 & $7F), (Address & $7F), (_val & $7F), $F7; }
-Function XGXclV(Int Address, Int _val) { SysEx = $F0, $43,$10,$4C, (Address / 65536 & $7F), (Address / 256 & $7F), (Address & $7F), (_val / 128 & $7F), (_val & $7F), $F7; }
-");
 
             Parameters.ForEach(p =>
             {
@@ -269,8 +265,7 @@ Function XGXclV(Int Address, Int _val) { SysEx = $F0, $43,$10,$4C, (Address / 65
                 mml.Append(p.ValueString);
                 mml.AppendLine();
             });
-
-            CopyToClipboard(mml.ToString());
+            return mml.ToString();
         }
-    }
+        }
 }

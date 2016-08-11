@@ -34,7 +34,7 @@ namespace Tsukikage.Util
                 Show();
                 if (listener == null)
                 {
-                    Debug.Listeners.Add(listener = new ConsoleTraceListener(true));
+                    Trace.Listeners.Add(listener = new ConsoleTraceListener(false));
                 }
             }
         }

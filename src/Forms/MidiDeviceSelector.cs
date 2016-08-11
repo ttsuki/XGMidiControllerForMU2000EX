@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Text;
 using System.Windows.Forms;
 using Tsukikage.Util;
 using Tsukikage.WinMM.MidiIO;
@@ -51,20 +53,22 @@ namespace Tsukikage.XGTGCtrl2.Forms
             }
         }
 
+
+        private XGMidiParameter masterVolume_;
+        private XGMidiParameter masterAttn_;
+        private XGMidiParameter masterTranspose_;
+        private XGMidiParameter masterTune_;
+
         void CreateXGPControls()
         {
-
-            XGMidiParameter MasterVolume = new XGMidiParameter(Device, "XGMasterVolume", 0x000004, 1, 0, 127, 0);
-
-            XGMidiParameter MasterAttn = new XGMidiParameter(Device, "XGMasterVolume", 0x000005, 1, 0, 127, 127);
-
-            XGMidiParameter MasterTranspose = new XGMidiParameter(Device, "Transpose", 0x000006, 1, 0x28, 0x58, 64);
-            MasterTranspose.ToStringConverter = XGMidiParameter.CenterPM;
-
-            XGMidiParameter MasterTune = new XGMidiParameter(Device, "MasterTune", 0x000000, 4, 0, 0x7FF, 0x400);
-            MasterTune.ReadValueEncoding = v => v & 0xF | v >> 3 & 0xF0 | v >> 6 & 0xF00;
-            MasterTune.WriteValueEncoding = v => v & 0xF | (v & 0xF0) << 3 | (v & 0xF00) << 6;
-            MasterTune.ToStringConverter = v => ((v - 1024) / 10).ToString("+000;-000") + "." + ((v - 1024) % 10).ToString();
+            masterVolume_ = new XGMidiParameter(Device, "XGMasterVolume", 0x000004, 1, 0, 127, 0);
+            masterAttn_ = new XGMidiParameter(Device, "XGMasterVolume", 0x000005, 1, 0, 127, 127);
+            masterTranspose_ = new XGMidiParameter(Device, "Transpose", 0x000006, 1, 0x28, 0x58, 64);
+            masterTranspose_.ToStringConverter = XGMidiParameter.CenterPM;
+            masterTune_ = new XGMidiParameter(Device, "MasterTune", 0x000000, 4, 0, 0x7FF, 0x400);
+            masterTune_.ReadValueEncoding = v => v & 0xF | v >> 3 & 0xF0 | v >> 6 & 0xF00;
+            masterTune_.WriteValueEncoding = v => v & 0xF | (v & 0xF0) << 3 | (v & 0xF00) << 6;
+            masterTune_.ToStringConverter = v => ((v - 1024) / 10).ToString("+000;-000") + "." + ((v - 1024) % 10).ToString();
 
             int w = 5;
             int x = 7;
@@ -166,6 +170,7 @@ namespace Tsukikage.XGTGCtrl2.Forms
 
                 xgpGrid1.RedrawOnRequestComplete();
             }).GetDescriptionFunc = () => "DblClick: Request Dump all XG Params.";
+
             y++;
 
             x = 0;
@@ -173,27 +178,44 @@ namespace Tsukikage.XGTGCtrl2.Forms
             w = 6;
             xgpGrid1.AddTriggerCell("[Dump]", x, y, w, Color.Black, () =>
             {
-                MasterVolume.Pick();
-                MasterAttn.Pick();
-                MasterTune.Pick();
-                MasterTranspose.Pick();
+                masterVolume_.Pick();
+                masterAttn_.Pick();
+                masterTune_.Pick();
+                masterTranspose_.Pick();
                 xgpGrid1.RedrawOnRequestComplete();
             }).GetDescriptionFunc = () => "DblClick: Request Dump parameters.";
             y++;
 
             xgpGrid1.AddLabelCell("MasterVolume", x, y, w - 2, Color.Green);
-            xgpGrid1.AddControlCell(MasterVolume, x + w - 2, y, 2, Color.Lime);
+            xgpGrid1.AddControlCell(masterVolume_, x + w - 2, y, 2, Color.Lime);
             y++;
             xgpGrid1.AddLabelCell("MasterAttn", x, y, w - 2, Color.Navy);
-            xgpGrid1.AddControlCell(MasterAttn, x + w - 2, y, 2, Color.Blue);
+            xgpGrid1.AddControlCell(masterAttn_, x + w - 2, y, 2, Color.Blue);
             y++;
             xgpGrid1.AddLabelCell("Transpose", x, y, w - 2, Color.Olive);
-            xgpGrid1.AddControlCell(MasterTranspose, x + w - 2, y, 2, Color.Yellow);
+            xgpGrid1.AddControlCell(masterTranspose_, x + w - 2, y, 2, Color.Yellow);
             y++;
             xgpGrid1.AddLabelCell("MasterTune", x, y, w - 2, Color.Purple);
-            xgpGrid1.AddControlCell(MasterTune, x + w - 2, y, 2, Color.Magenta);
+            xgpGrid1.AddControlCell(masterTune_, x + w - 2, y, 2, Color.Magenta);
             y++;
             xgpGrid1.SetDevice(Device);
+        }
+
+        public string GetMmlText()
+        {
+            StringBuilder mml = new StringBuilder();
+
+            foreach (var p in new [] { masterVolume_, masterAttn_, masterTranspose_ })
+            {
+                mml.AppendLine("r%1 XGXcl1($" + p.Address.ToString("X06") + ", $" + p.Value.ToString("X02") + "); // " + p.Name + " = " + p.ValueString);
+            }
+
+            foreach (var p in new[] { masterTune_ })
+            {
+                mml.AppendLine("r%1 XGXclN($" + p.Address.ToString("X06") + ", $" + p.Value.ToString("X04") + "); // " + p.Name + " = " + p.ValueString);
+            }
+
+            return mml.ToString();
         }
 
         private void comboBoxMidiInSelect_SelectedIndexChanged(object sender, EventArgs e)

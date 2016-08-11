@@ -160,7 +160,7 @@ namespace Tsukikage.XGTGCtrl2.XG
     class XGPartParams : ParameterCollection
     {
         public int Channel { get; private set; }
-
+        public XGMidiParameter PartMode { get; private set; }
         public XGMidiParameter ProgramMSB { get; private set; }
         public XGMidiParameter ProgramLSB { get; private set; }
         public XGMidiParameter ProgramNumber { get; private set; }
@@ -203,6 +203,8 @@ namespace Tsukikage.XGTGCtrl2.XG
             : base(host, "Part[" + (channel + 1) + "]", 0x080000 | channel << 8)
         {
             Channel = channel;
+
+            PartMode = AddParameter("PartMode", 0x07, 0x00, 0x05, 0x00, XGMidiParameter.MakeTableToStringFunc("N","D","D1","D2","D3","D4"));
             ProgramMSB = AddParameter("ProgramMSB", 0x01, 0x00, 0x7f, 0x00);
             ProgramLSB = AddParameter("ProgramLSB", 0x02, 0x00, 0x7f, 0x00);
             ProgramNumber = AddParameter("ProgramNumber", 0x03, 0x00, 0x7f, 0x00, XGMidiParameter.ProgramNumber);

@@ -28,20 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.buttonToMML = new System.Windows.Forms.Button();
             this.buttonSendAll = new System.Windows.Forms.Button();
             this.buttonDumpAll = new System.Windows.Forms.Button();
             this.SuspendLayout();
-            // 
-            // buttonToMML
-            // 
-            this.buttonToMML.Location = new System.Drawing.Point(165, 3);
-            this.buttonToMML.Name = "buttonToMML";
-            this.buttonToMML.Size = new System.Drawing.Size(75, 23);
-            this.buttonToMML.TabIndex = 5;
-            this.buttonToMML.Text = "ToMML";
-            this.buttonToMML.UseVisualStyleBackColor = true;
-            this.buttonToMML.Click += new System.EventHandler(this.buttonToMML_Click);
             // 
             // buttonSendAll
             // 
@@ -63,22 +52,19 @@
             this.buttonDumpAll.UseVisualStyleBackColor = true;
             this.buttonDumpAll.Click += new System.EventHandler(this.buttonDumpAll_Click);
             // 
-            // PartParameterGrid
+            // MultiEQParameterGrid
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.buttonToMML);
             this.Controls.Add(this.buttonSendAll);
             this.Controls.Add(this.buttonDumpAll);
-            this.Name = "PartParameterGrid";
+            this.Name = "MultiEQParameterGrid";
             this.Size = new System.Drawing.Size(606, 467);
             this.ResumeLayout(false);
 
         }
 
         #endregion
-
-        private System.Windows.Forms.Button buttonToMML;
         private System.Windows.Forms.Button buttonSendAll;
         private System.Windows.Forms.Button buttonDumpAll;
     }

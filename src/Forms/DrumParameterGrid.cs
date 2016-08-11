@@ -30,9 +30,9 @@ namespace Tsukikage.XGTGCtrl2.Forms
         protected override void OnSetDevice()
         {
             TargetChannel = 10;
-            if (TargetMap == 1) { TargetChannel = 10; }
+            if (TargetMap == 1) { TargetChannel = 9; }
             if (TargetMap == 2) { TargetChannel = 9; }
-            if (TargetMap == 3) { TargetChannel = 26; }
+            if (TargetMap == 3) { TargetChannel = 9; }
 
             textBox1.Text = Config.drumMapInitial;
 
@@ -167,24 +167,28 @@ namespace Tsukikage.XGTGCtrl2.Forms
             }
         }
 
-        private void buttonToMML_Click(object sender, EventArgs e)
+        public string GetMmlFuncText()
         {
-            StringBuilder mml = new StringBuilder();
-            mml.Append(
-@"Function DrumParam(Int _n, Int _pco, Int _pft, Int _vol, Int _pan, Int _rev, Int _cho, Int _var,
+            return @"Function DrumParam(Int _n, Int _pco, Int _pft, Int _vol, Int _pan, Int _rev, Int _cho, Int _var,
     Int _lpf, Int _rsn, Int _hpf, Int _atk, Int _dc1, Int _dc2, Int _bfr, Int _bga, Int _tfr, Int _tga)
 {
-    NRPN($18,_n,_pco) NRPN($19,_n,_pft) NRPN($1A,_n,_vol) NRPN($1C,_n,_pan)
-    NRPN($1D,_n,_rev) NRPN($1E,_n,_cho) NRPN($1F,_n,_var) 
-    NRPN($14,_n,_lpf) NRPN($15,_n,_rsn) NRPN($24,_n,_hpf) NRPN($16,_n,_atk) NRPN($17,_n,_dc1)
-    NRPN($34,_n,_bfr) NRPN($30,_n,_bga) NRPN($35,_n,_tfr) NRPN($31,_n,_tga)
+    XGNrpn($18,_n,_pco) XGNrpn($19,_n,_pft) XGNrpn($1A,_n,_vol) XGNrpn($1C,_n,_pan)
+    XGNrpn($1D,_n,_rev) XGNrpn($1E,_n,_cho) XGNrpn($1F,_n,_var) 
+    XGNrpn($14,_n,_lpf) XGNrpn($15,_n,_rsn) XGNrpn($24,_n,_hpf) XGNrpn($16,_n,_atk) XGNrpn($17,_n,_dc1)
+    XGNrpn($34,_n,_bfr) XGNrpn($30,_n,_bga) XGNrpn($35,_n,_tfr) XGNrpn($31,_n,_tga)
+    r%1
 }
+";
+        }
 
-");
+        public string GetMmlDataText()
+        {
+            StringBuilder mml = new StringBuilder();
+            mml.AppendLine("CH = " + this.TargetChannel);
             for (int i = 0; i < Drums.Count; i++)
             {
                 XGDrumParams p = Drums[i];
-                int[] arr = { p.NoteNumber, 
+                int[] arr = { p.NoteNumber,
                              p.PitchCoarse.Value, p.PitchFine.Value,
                              p.Volume.Value,p.Pan.Value,p.Reverb.Value,p.Chorus.Value,p.Variation.Value,
                              p.LPFCutoffFreq.Value, p.LPFResonance.Value, p.HPFCutoffFreq.Value,
@@ -193,7 +197,7 @@ namespace Tsukikage.XGTGCtrl2.Forms
 
                 mml.AppendLine("DrumParam(" + string.Join(",", Array.ConvertAll(arr, v => v.ToString())) + ");");
             }
-            CopyToClipboard(mml.ToString());
+            return mml.ToString();
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -224,6 +228,11 @@ namespace Tsukikage.XGTGCtrl2.Forms
                 numericUpDown1.BackColor = Color.MistyRose;
 
             }
+        }
+
+        private void DrumParameterGrid_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

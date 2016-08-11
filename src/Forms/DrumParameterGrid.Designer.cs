@@ -30,7 +30,6 @@
         {
             this.buttonDumpAll = new System.Windows.Forms.Button();
             this.buttonSendAll = new System.Windows.Forms.Button();
-            this.buttonToMML = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.labelNotes = new System.Windows.Forms.Label();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
@@ -57,16 +56,6 @@
             this.buttonSendAll.Text = "SendAll";
             this.buttonSendAll.UseVisualStyleBackColor = true;
             this.buttonSendAll.Click += new System.EventHandler(this.buttonSendAll_Click);
-            // 
-            // buttonToMML
-            // 
-            this.buttonToMML.Location = new System.Drawing.Point(165, 3);
-            this.buttonToMML.Name = "buttonToMML";
-            this.buttonToMML.Size = new System.Drawing.Size(75, 23);
-            this.buttonToMML.TabIndex = 2;
-            this.buttonToMML.Text = "ToMML";
-            this.buttonToMML.UseVisualStyleBackColor = true;
-            this.buttonToMML.Click += new System.EventHandler(this.buttonToMML_Click);
             // 
             // textBox1
             // 
@@ -125,10 +114,10 @@
             this.Controls.Add(this.labelPart);
             this.Controls.Add(this.labelNotes);
             this.Controls.Add(this.textBox1);
-            this.Controls.Add(this.buttonToMML);
             this.Controls.Add(this.buttonSendAll);
             this.Controls.Add(this.buttonDumpAll);
             this.Name = "DrumParameterGrid";
+            this.Load += new System.EventHandler(this.DrumParameterGrid_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -139,7 +128,6 @@
 
         private System.Windows.Forms.Button buttonDumpAll;
         private System.Windows.Forms.Button buttonSendAll;
-        private System.Windows.Forms.Button buttonToMML;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label labelNotes;
         private System.Windows.Forms.NumericUpDown numericUpDown1;
